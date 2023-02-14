@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  gateway:
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    image: gateway
+    container_name: kameleoon-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+    environment:
+      - KAMELEOON_SERVER_URL=http://server:9090
+
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    image: server
+    container_name: kameleoon-server
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:default
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
